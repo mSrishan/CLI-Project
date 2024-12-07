@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class test {
+public class MarksManagementSystem {
 
     private static final int MAX_STUDENTS = 100;
     private static String[] studentIds = new String[MAX_STUDENTS];
@@ -17,42 +17,22 @@ public class test {
             int option = getIntInput(scanner, "Select an option: ");
 
             switch (option) {
-                case 1:
-                    addNewStudent(scanner);
-                    break;
-                case 2:
-                    addNewStudentWithMarks(scanner);
-                    break;
-                case 3:
-                    addMarks(scanner);
-                    break;
-                case 4:
-                    updateStudentDetails(scanner);
-                    break;
-                case 5:
-                    updateMarks(scanner);
-                    break;
-                case 6:
-                    deleteStudent(scanner);
-                    break;
-                case 7:
-                    printStudentDetails(scanner);
-                    break;
-                case 8:
-                    printStudentRanks();
-                    break;
-                case 9:
-                    bestInProgrammingFundamentals();
-                    break;
-                case 10:
-                    bestInDatabaseManagementSystem();
-                    break;
-                case 0:
+                case 1 -> addNewStudent(scanner);
+                case 2 -> addNewStudentWithMarks(scanner);
+                case 3 -> addMarks(scanner);
+                case 4 -> updateStudentDetails(scanner);
+                case 5 -> updateMarks(scanner);
+                case 6 -> deleteStudent(scanner);
+                case 7 -> printStudentDetails(scanner);
+                case 8 -> printStudentRanks();
+                case 9 -> bestInProgrammingFundamentals();
+                case 10 -> bestInDatabaseManagementSystem();
+                case 0 -> {
                     System.out.println("Exiting... Goodbye!");
                     scanner.close();
                     return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                }
+                default -> System.out.println("Invalid option. Please try again.");
             }
         }
     }
@@ -67,9 +47,13 @@ public class test {
         System.out.println("[5] Update Marks                        [6] Delete Student");
         System.out.println("[7] Print Student Details               [8] Print Student Ranks");
         System.out.println("[9] Best In Programming Fundamentals    [10] Best In Database Management Systems");
+        System.out.println("[0] Exit");
     }
 
     private static void addNewStudent(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    ADD NEW STUDENT                                          |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID: ");
             if (findStudentIndex(id) != -1) {
@@ -87,6 +71,9 @@ public class test {
     }
 
     private static void addNewStudentWithMarks(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    ADD NEW STUDENT WITH MARKS                               |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID: ");
             if (findStudentIndex(id) != -1) {
@@ -106,6 +93,9 @@ public class test {
     }
 
     private static void addMarks(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    ADD MARKS                                                |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID to add marks: ");
             int index = findStudentIndex(id);
@@ -128,6 +118,9 @@ public class test {
     }
 
     private static void updateStudentDetails(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    UPDATE STUDENT DETAILS                                   |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID to update: ");
             int index = findStudentIndex(id);
@@ -146,6 +139,9 @@ public class test {
     }
 
     private static void updateMarks(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    UPDATE MARKS                                             |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID to update marks: ");
             int index = findStudentIndex(id);
@@ -164,6 +160,9 @@ public class test {
     }
 
     private static void deleteStudent(Scanner scanner) {
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    DELETE STUDENT                                           |");
+        System.out.println("-------------------------------------------------------------------------------");
         while (true) {
             String id = getStringInput(scanner, "Enter Student ID to delete: ");
             int index = findStudentIndex(id);
@@ -181,19 +180,82 @@ public class test {
     }
 
     private static void printStudentDetails(Scanner scanner) {
-        // TODO: Implement functionality as per guidelines
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    PRINT STUDENT DETAILS                                    |");
+        System.out.println("-------------------------------------------------------------------------------");
+        String id = getStringInput(scanner, "Enter Student ID: ");
+        int index = findStudentIndex(id);
+        if (index == -1) {
+            System.out.println("Student ID not found.");
+            return;
+        }
+        System.out.println("Student ID: " + studentIds[index]);
+        System.out.println("Name: " + studentNames[index]);
+        if (programmingMarks[index] == -1 || databaseMarks[index] == -1) {
+            System.out.println("Marks not yet added.");
+        } else {
+            System.out.println("Programming Marks: " + programmingMarks[index]);
+            System.out.println("Database Marks: " + databaseMarks[index]);
+            System.out.println("Total Marks: " + (programmingMarks[index] + databaseMarks[index]));
+            System.out.println("Average Marks: " + (programmingMarks[index] + databaseMarks[index]) / 2.0);
+        }
     }
 
     private static void printStudentRanks() {
-        // TODO: Implement functionality as per guidelines
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    PRINT STUDENT RANKS                                      |");
+        System.out.println("-------------------------------------------------------------------------------");
+        if (studentCount == 0) {
+            System.out.println("No students available.");
+            return;
+        }
+        int[] totalMarks = new int[studentCount];
+        for (int i = 0; i < studentCount; i++) {
+            totalMarks[i] = programmingMarks[i] + databaseMarks[i];
+        }
+        for (int i = 0; i < studentCount - 1; i++) {
+            for (int j = 0; j < studentCount - i - 1; j++) {
+                if (totalMarks[j] < totalMarks[j + 1]) {
+                    swap(j, j + 1, totalMarks);
+                }
+            }
+        }
+        System.out.println("Rank\tStudent ID\tName\tTotal Marks\tAverage Marks");
+        for (int i = 0; i < studentCount; i++) {
+            if (programmingMarks[i] == -1 || databaseMarks[i] == -1) continue;
+            System.out.printf("%d\t%s\t%s\t%d\t%.2f%n",
+                    i + 1, studentIds[i], studentNames[i], totalMarks[i], totalMarks[i] / 2.0);
+        }
     }
 
     private static void bestInProgrammingFundamentals() {
-        // TODO: Implement functionality as per guidelines
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    BEST IN PROGRAMMING FUNDAMENTALS                         |");
+        System.out.println("-------------------------------------------------------------------------------");
+        int maxMarks = -1;
+        String bestStudent = "No data";
+        for (int i = 0; i < studentCount; i++) {
+            if (programmingMarks[i] > maxMarks) {
+                maxMarks = programmingMarks[i];
+                bestStudent = studentNames[i];
+            }
+        }
+        System.out.println("Best in Programming Fundamentals: " + bestStudent + " (" + maxMarks + " marks)");
     }
 
     private static void bestInDatabaseManagementSystem() {
-        // TODO: Implement functionality as per guidelines
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("|                    BEST IN DATABASE MANAGEMENT SYSTEM                       |");
+        System.out.println("-------------------------------------------------------------------------------");
+        int maxMarks = -1;
+        String bestStudent = "No data";
+        for (int i = 0; i < studentCount; i++) {
+            if (databaseMarks[i] > maxMarks) {
+                maxMarks = databaseMarks[i];
+                bestStudent = studentNames[i];
+            }
+        }
+        System.out.println("Best in Database Management Systems: " + bestStudent + " (" + maxMarks + " marks)");
     }
 
     private static void addStudent(String id, String name, int progMarks, int dbMarks) {
@@ -221,6 +283,28 @@ public class test {
             databaseMarks[i] = databaseMarks[i + 1];
         }
         studentCount--;
+    }
+
+    private static void swap(int i, int j, int[] totalMarks) {
+        int tempMarks = totalMarks[i];
+        totalMarks[i] = totalMarks[j];
+        totalMarks[j] = tempMarks;
+
+        String tempId = studentIds[i];
+        studentIds[i] = studentIds[j];
+        studentIds[j] = tempId;
+
+        String tempName = studentNames[i];
+        studentNames[i] = studentNames[j];
+        studentNames[j] = tempName;
+
+        int tempProg = programmingMarks[i];
+        programmingMarks[i] = programmingMarks[j];
+        programmingMarks[j] = tempProg;
+
+        int tempDb = databaseMarks[i];
+        databaseMarks[i] = databaseMarks[j];
+        databaseMarks[j] = tempDb;
     }
 
     private static int getValidatedMarks(Scanner scanner, String message) {
